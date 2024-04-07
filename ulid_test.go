@@ -344,7 +344,16 @@ func TestParseRobustness(t *testing.T) {
 		}
 
 		var err error
-		if _, err = ulid.Parse(string(s[:])); err != nil {
+		data := string(s[:])
+		data = strings.ReplaceAll(data, "i", "1")
+		data = strings.ReplaceAll(data, "I", "1")
+		data = strings.ReplaceAll(data, "l", "1")
+		data = strings.ReplaceAll(data, "L", "1")
+		data = strings.ReplaceAll(data, "o", "0")
+		data = strings.ReplaceAll(data, "O", "0")
+		data = strings.ReplaceAll(data, "u", "Z")
+		data = strings.ReplaceAll(data, "U", "Z")
+		if _, err = ulid.Parse(data); err != nil {
 			t.Error(err)
 		}
 

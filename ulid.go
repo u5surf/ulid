@@ -23,6 +23,7 @@ import (
 	"math"
 	"math/bits"
 	"math/rand"
+	"strings"
 	"sync"
 	"time"
 )
@@ -155,6 +156,16 @@ func Make() (id ULID) {
 // ULID's length. Invalid encodings produce undefined ULIDs. For a version that
 // returns an error instead, see ParseStrict.
 func Parse(ulid string) (id ULID, err error) {
+	if strings.Contains(ulid, "I") ||
+		strings.Contains(ulid, "i") ||
+		strings.Contains(ulid, "L") ||
+		strings.Contains(ulid, "l") ||
+		strings.Contains(ulid, "O") ||
+		strings.Contains(ulid, "o") ||
+		strings.Contains(ulid, "U") ||
+		strings.Contains(ulid, "u") {
+		return id, ErrInvalidCharacters
+	}
 	return id, parse([]byte(ulid), false, &id)
 }
 
@@ -166,6 +177,16 @@ func Parse(ulid string) (id ULID, err error) {
 // ErrDataSize is returned if the len(ulid) is different from an encoded
 // ULID's length. Invalid encodings return ErrInvalidCharacters.
 func ParseStrict(ulid string) (id ULID, err error) {
+	if strings.Contains(ulid, "I") ||
+		strings.Contains(ulid, "i") ||
+		strings.Contains(ulid, "L") ||
+		strings.Contains(ulid, "l") ||
+		strings.Contains(ulid, "O") ||
+		strings.Contains(ulid, "o") ||
+		strings.Contains(ulid, "U") ||
+		strings.Contains(ulid, "u") {
+		return id, ErrInvalidCharacters
+	}
 	return id, parse([]byte(ulid), true, &id)
 }
 
